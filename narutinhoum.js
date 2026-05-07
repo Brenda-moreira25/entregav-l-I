@@ -1,6 +1,4 @@
-//Agora, realize as seguintes operações SEM UTILIZAR FOR, WHILE ou FOREACH. UTILIZE SOMENTE ARROW FUNCTIONS SEM ESCOPO ONE-LINER.
-
-const personagensNaruto = [
+export const personagensNaruto = [
   {
     nome: "Naruto",
     sobrenome: "Uzumaki",
@@ -184,39 +182,39 @@ const personagensNaruto = [
   }
 ];
 
-// cria vetor com map (tratando sobrenome nulo)
-const pessoas = personagensNaruto.map(personas => personas.nome + personas.sobrenome)
+//Realize as seguintes operações SEM UTILIZAR FOR, WHILE ou FOREACH. UTILIZE SOMENTE ARROW FUNCTIONS SEM ESCOPO ONE-LINER.
 
-//Crie um vetor somente com os personagens da Folha que são menores de idade usando filter.
-const menoresDeIdade = personagensNaruto.filter (p => p.idade < 18) 
+// 1. Vetor com nome completo 
+const pessoas = personagensNaruto.map(p => `${p.nome}${p.sobrenome ? " " + p.sobrenome : ""}`);
 
-//separar se é do clã da folha:
-const grupo = personagensNaruto.filter(classes => classes.ehDaFolha === true).map( classes.nome)
+// 2. Personagens da Folha menores de idade
+const menoresDeIdadeFolha = personagensNaruto.filter(p => p.ehDaFolha && p.idade < 18);
 
-//Quantos personagens possuem kekkei-gengai?
-const nivelalto = personagensNaruto.filter(nivel => nivel.possuiKekkeiGenkai === true).map(nivel.possuiKekkeiGenkai)
+// 3. Somente os nomes dos personagens que são da Folha
+const nomesDaFolha = personagensNaruto.filter(p => p.ehDaFolha).map(p => p.nome);
 
-//Utilize chaining para construir um one-liner com map e filter para selecionar os chakras dos personagens 
-const chakras = personagensNaruto.filter(p => p.chakra > 50).map(p => p.chakra);
+// 4. Quantidade de personagens com Kekkei Genkai 
+const qtdKekkeiGenkai = personagensNaruto.filter(p => p.possuiKekkeiGenkai).length;
 
-//Qual o chakra total dos personagens? E a média? Quem possui o menor chakra? E o maior?
-const totalchkras = personagens.filter(p => p.nivel === "Jonin").map(p => p.chakra).reduce((total, chakra) => total + chakra, 0); 
+// 5. Chakras dos personagens (filtrar quem tem mais de 50 de chakra)
+const chakrasAltos = personagensNaruto.filter(p => p.chakra > 50).map(p => p.chakra);
 
-//Descubra a razão chakra-idade média dos Chunin. Utilize filter para selecionar somente os Chunin, map para o vetor de razões (a razão é chakra / idade) e reduce para realizar o somatório necessário pra calcular a média.
-const razao = personagensNaruto.filter(p => p.chakra / p.idade).map(p => p.razao)
+// 6. Chakra Total, Média, Menor e Maior
+const chakraTotal = personagensNaruto.reduce((acc, p) => acc + p.chakra, 0);
+const chakraMedia = chakraTotal / personagensNaruto.length;
+const menorChakra = personagensNaruto.reduce((min, p) => p.chakra < min.chakra ? p : min);
+const maiorChakra = personagensNaruto.reduce((max, p) => p.chakra > max.chakra ? p : max);
+
+// 7. Razão chakra-idade média dos Chunin
+const chunins = personagensNaruto.filter(p => p.nivel === "Chunin");
+const mediaRazaoChunin = chunins.map(p => p.chakra / p.idade).reduce((acc, r) => acc + r, 0) / chunins.length;
+
+// 8. Personagem com Maior e Menor razão chakra-idade
+const maiorRazao = personagensNaruto.reduce((max, p) => (p.chakra / p.idade) > (max.chakra / max.idade) ? p : max);
+const menorRazao = personagensNaruto.reduce((min, p) => (p.chakra / p.idade) < (min.chakra / min.idade) ? p : min);
 
 
-//Mostre o nome do personagem com a maior e com a menor razão chakra-idade.
-//Crie um endpoint de API para cada uma das operações acima.
-get
-Push
-
-
-//Faça deploy da sua API para o Vercel.
-//Ao finalizar, envie o link do seu repositório no GitHub, com o arquivo de especificação do Bruno.
-
-console.log(pessoas);
-console.log(menoresDeIdade);
-console.log(grupo);
-console.log(nivelalto);
-console.log(totalChakraJonin);
+console.log("Nomes:", pessoas);
+console.log("Qtd Kekkei Genkai:", qtdKekkeiGenkai);
+console.log("Média Razão Chunin:", mediaRazaoChunin.toFixed(2));
+console.log("Maior Razão:", maiorRazao.nome);
